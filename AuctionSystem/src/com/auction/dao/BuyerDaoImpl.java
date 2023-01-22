@@ -27,9 +27,9 @@ public class BuyerDaoImpl implements BuyerDao{
 			ps.setString(1, buyer.getBuyerFirstName());
 			ps.setString(2, buyer.getBuyerLastName());
 			ps.setString(3, buyer.getBuyerEmail());
-			ps.setString(2, buyer.getBuyerPassword());
-			ps.setString(2, buyer.getBuyerMobile());
-			ps.setDate(2, buyer.getBuyerDob());
+			ps.setString(4, buyer.getBuyerPassword());
+			ps.setString(5, buyer.getBuyerMobile());
+			ps.setDate(6, buyer.getBuyerDob());
 			
 			int x = ps.executeUpdate();
 			if(x > 0) {

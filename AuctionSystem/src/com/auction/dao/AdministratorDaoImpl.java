@@ -46,7 +46,7 @@ public class AdministratorDaoImpl implements AdministratorDao{
 				administrator.setAdminEmail(rs.getString("adminEmail"));
 				administrator.setAdminPassword(rs.getString("adminPassword"));
 				administrator.setAdminMobile(rs.getString("adminMobile"));
-				administrator.setAdminDob(rs.getDate("adminDod"));
+				administrator.setAdminDob(rs.getDate("adminDob"));
 			}
 			else {
 				throw new AdministratorException("Invalid username or password..."); 
@@ -376,7 +376,7 @@ List<DisputeBuyerToSellerWithTeamAndCategoryNameDTO> dispute = new ArrayList<>()
 		List<DisputeSellerToAppWithTeamNameDto> dispute = new ArrayList<>();
 		try (Connection conn = DBUtility.provideConnection()){
 
-			PreparedStatement ps = conn.prepareStatement("select s.disputeId, s.sellerId, s.categoryId, s.disputeDetails, s.disputeDate, s.solutionDate, s.IsSolve, t.disputeTeamName from seller_app s INNER JOIN disputHandleTeam t ON s.categoryId = t.categoryId AND s.IsSolve = true");
+			PreparedStatement ps = conn.prepareStatement("select s.disputeId, s.sellerId, s.categoryId, s.disputeDetails, s.disputeDate, s.solutionDate, s.IsSolve, t.disputeTeamName from seller_app s INNER JOIN disputeHandleTeam t ON s.categoryId = t.categoryId AND s.IsSolve = true");
 			
 			ResultSet rs= ps.executeQuery();
 			boolean flag= true;

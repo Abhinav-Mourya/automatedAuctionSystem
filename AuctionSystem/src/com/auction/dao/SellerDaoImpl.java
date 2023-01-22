@@ -24,7 +24,7 @@ public class SellerDaoImpl implements SellerDao{
 		
 		try (Connection conn=DBUtility.provideConnection()){
 			
-			PreparedStatement ps=conn.prepareStatement("insert into seller (sellerFirstName, sellerLastName, sellerEmail, sellerPassword, sellerMobile, sellerDod) values(?, ?, ?, ?, ?, ?)");
+			PreparedStatement ps=conn.prepareStatement("insert into seller (sellerFirstName, sellerLastName, sellerEmail, sellerPassword, sellerMobile, sellerDob) values(?, ?, ?, ?, ?, ?)");
 			
             ps.setString(1, seller.getSellerFirstName());
 			ps.setString(2, seller.getSellerLastName());
@@ -81,7 +81,7 @@ try (Connection conn = DBUtility.provideConnection()) {
 				seller.setSellerEmail(rs.getString("sellerEmail"));
 				seller.setSellerPassword(rs.getString("sellerPassword"));
 				seller.setSellerMobile(rs.getString("sellerMobile"));
-				seller.setSellerDob(rs.getDate("sellerDod"));
+				seller.setSellerDob(rs.getDate("sellerDob"));
 			}
 			else {
 				throw new SellerException("Invalid username or password..."); 
@@ -142,7 +142,7 @@ try (Connection conn = DBUtility.provideConnection()) {
 	
 	try (Connection conn = DBUtility.provideConnection()) {
 		
-		PreparedStatement ps = conn.prepareStatement("update seller set sellerEmail= ? where sellerFirstName= ? AND sellerDod= ? AND sellerMobile = ?");
+		PreparedStatement ps = conn.prepareStatement("update seller set sellerEmail= ? where sellerFirstName= ? AND sellerDob= ? AND sellerMobile = ?");
 		
 		ps.setString(1, username);
 		
@@ -185,7 +185,7 @@ try (Connection conn = DBUtility.provideConnection()) {
 		try (Connection conn = DBUtility.provideConnection()) {
 			
 			int x= 0;
-			PreparedStatement ps = conn.prepareStatement("insert into Products(sellerId, categoryId, productAddedDate, sellingPrice, productName, productQuantity, auctionAddress, auctionDate) values(?, ?, sysdate(), ?, ?, ?, ?, adddate(sysdate(), INTERVAL ? DAY), 0)");
+			PreparedStatement ps = conn.prepareStatement("insert into Products(sellerId, categoryId, productAddedDate, sellingPrice, productName, productQuantity, auctionAddress, auctionDate) values(?, ?, sysdate(), ?, ?, ?, ?, adddate(sysdate(), INTERVAL ? DAY))");
 
 			for(Products p : arr) {
 				ps.setInt(1, p.getSellerId());
@@ -233,7 +233,7 @@ try (Connection conn = DBUtility.provideConnection()) {
 			int x = ps.executeUpdate();
 			
 			if(x > 0) {
-				message = x+ "Price successfully updated ";
+				message = "Price successfully updated ";
 			}
 			else {
 				throw new ProductException(message);
@@ -273,7 +273,7 @@ try (Connection conn = DBUtility.provideConnection()) {
 			int x = ps.executeUpdate();
 			
 			if(x > 0) {
-				message = x+ " Quantity successfully updated";
+				message = " Quantity successfully updated";
 			}
 			else {
 				throw new ProductException(message);
@@ -461,7 +461,7 @@ try (Connection conn = DBUtility.provideConnection()) {
         List<Products> sellingItems = new ArrayList<>();
 		
 		try (Connection conn = DBUtility.provideConnection()){
-			PreparedStatement ps = conn.prepareStatement("select * from products where sellerId = ? order by productAdddedDate desc");
+			PreparedStatement ps = conn.prepareStatement("select * from products where sellerId = ? order by productAddedDate desc");
 			
 			ps.setInt(1, sid);
 			
@@ -472,12 +472,12 @@ try (Connection conn = DBUtility.provideConnection()) {
 				
 				Products sellingItem = new Products();
 				sellingItem.setAutionID(rs.getInt("auctionID"));
-				sellingItem.setSellerId(rs.getInt("sid"));
-				sellingItem.setCategoryId(rs.getInt("cid"));
-				sellingItem.setProductAddedDate(rs.getDate("ItemDate"));
+				sellingItem.setSellerId(rs.getInt("sellerId"));
+				sellingItem.setCategoryId(rs.getInt("categoryId"));
+				sellingItem.setProductAddedDate(rs.getDate("productAddedDate"));
 				sellingItem.setSellingPrice(rs.getInt("sellingPrice"));
-				sellingItem.setProductName(rs.getString("item_detail"));
-				sellingItem.setProductQuantity(rs.getInt("item_quantity"));
+				sellingItem.setProductName(rs.getString("productName"));
+				sellingItem.setProductQuantity(rs.getInt("productQuantity"));
 				sellingItem.setAuctionAddress(rs.getString("auctionAddress"));
 				sellingItem.setAuctionDate(rs.getDate("auctionDate"));
 				sellingItems.add(sellingItem);
