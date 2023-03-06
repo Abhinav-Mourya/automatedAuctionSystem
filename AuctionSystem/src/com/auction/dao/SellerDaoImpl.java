@@ -20,7 +20,7 @@ public class SellerDaoImpl implements SellerDao{
 	@Override
 	public String registerSeller(Seller seller) throws SellerException {
 	
-		String message = "This email account already exist ...";
+		String message = "";
 		
 		try (Connection conn=DBUtility.provideConnection()){
 			

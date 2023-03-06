@@ -1,0 +1,306 @@
+For Login/Register
+__________________
+
+1. Seller
+
+create table seller(
+sellerId int primary key auto_increment,
+sellerFirstName varchar(20) not null,
+sellerLastName varchar(20),
+sellerEmail varchar(20) not null unique,
+sellerPassword varchar(45) not null,
+sellerMobile char(10) unique not null,
+sellerDod date not null
+);
+
+
+
+
+
+2.Buyer
+
+create table buyer(
+buyerId int primary key auto_increment,
+buyerFirstName varchar(20) not null,
+buyerLastName varchar(20),
+buyerEmail varchar(20) not null unique,
+buyerPassword varchar(45) not null,
+buyerMobile char(10) unique not null,
+buyerDod date not null
+);
+
+
+
+
+
+
+3. Administrator
+
+create table Administrator(
+adminId int primary key auto_increment,
+adminFirstName varchar(20) not null,
+adminLastName varchar(20),
+adminEmail varchar(20) not null unique,
+adminPassword varchar(45) not null,
+adminMobile char(10) unique not null,
+adminDod date not null
+);
+
+
+
+
+
+Category
+______________
+
+create table category(
+categoryId int primary key auto_increment,
+categoryName varchar(25) not null unique
+);
+
+
+
+
+Dispute Detail tables
+-----------------------
+
+1. Dispute Handle Team
+
+create table disputeHandleTeam(
+disputeTeamId int primary key auto_increment,
+disputeTeamName varchar(20) not null,
+categoryId int not null,
+foreign key (categoryId) references category(categoryId)
+);
+
+
+
+
+
+2. seller_app
+
+create table seller_app(
+disputeId int primary key auto_increment,
+sllerId int not null,
+categoryId int not null,
+disputeDetails varchar(50) not null,
+disputeDate date not null,
+solutionDate date,
+IsSolve boolean,
+foreign key (sellerId) references seller(sellerId),
+foreign key (categoryId) references category(categoryId)
+);
+
+
+
+
+
+3. Buyer to Seller
+
+create table buyer_to_seller(
+disputeId int primary key auto_increment,
+buyerId int not null,
+categoryId int not null,
+disputeDetails varchar(50) not null,
+disputeDate date not null,
+sellerId int,
+solutionDate date,
+IsSolve boolean,
+foreign key (buyerId) references buyer(buyerId),
+foreign key (sellerId) references seller(sellerId),
+foreign key (categoryId) references category(categoryId)
+);
+
+
+
+
+
+
+Items To Sell
+------------------
+
+1. Products
+
+create table products(
+autionId int not null unique auto_increment,
+sellerId int not null,
+categoryId int not null,
+productAddedDate date not null,
+sellingPrice int not null,
+productName varchar(25) not null,
+productQuantity int not null,
+auctionAddress varchar(25) not null,
+auctionDate date not null,
+noOfBuyerAuction int not null,
+foreign key (sellerId) references seller(sellerId),
+foreign key (categoryId) references category(categoryId)
+primary key(sellerId, productName)
+);
+
+
+
+
+
+
+2. products_sold
+
+create table products_sold(
+auctionId int primary key,
+sellerId int not null,
+buyerId int not null,
+categoryId int not null,
+productName varchar(25),
+productQuantity int not null,
+productAddedDate date not null,
+sellingPrice int not null,
+auctionPrice int not null,
+auctionAddress varchar(25) not null,
+auctionDate date,
+foreign key (sellerId) references seller(sellerId),
+foreign key (buyerId) references buyer(buyerId),
+foreign key (categoryId) references category(categoryId)
+);
+
+
+
+
+
+3. Auction on Items
+
+create table AuctionTable(
+auctionId int not null,
+buyerId int not null,
+auctionPrice int not null,
+primary key (auctionId, buyerId)
+);
+
+
+
+
+--------------------------------------------------------------------
+
+values
+-------
+
+1. Administrator
+________________
+
+Register Administrator
+
+>insert into administrator 
+(adminFirstName, adminLastName, adminEmail, adminPassword, adminMobile, adminDod) 
+values(
+'Abhinav',
+'Mourya', 
+'abhinavmourya22@gmail.com',
+'auctionKing',
+'9898776565',
+19960412
+);
+
+
+Login Administrator
+
+>select * from Administrator where adminEmail = ? AND adminPassword = ?
+
+
+
+List of Buyer
+
+>select * from buyer;
+
+
+insert in Buyer
+
+>insert into buyer
+(buyerFirstName, buyerLastName, buyerEmail, buyerPassword, buyerMobile, buyerDod) values(
+'nikki',
+'singh',
+'nikki@gmail.com',
+'123456',
+'9098787666',
+19981225
+);
+
+> update administrator set adminPassword = '12345' where adminEmail='abhinavmourya22@gmail.com';
+
+
+
+> select * from seller
+
+> insert into seller
+(sellerFirstName, sellerLastName, sellerEmail, sellerPassword, sellerMobile, sellerDod) values(
+'Kanishk',
+'Rai',
+'kanishk@gmail.com',
+'12345',
+'9890987656',
+'1998-09-04'
+);
+
+
+
+
+> select s.disputeId, s.sellerId, s.categoryId, s.disputeDetails, s.disputeDate, s.solutionDate, s.IsSolve, t.disputeTeamName from seller_app s INNER JOIN disputeHandleTeam t ON s.categoryId = t.categoryId AND s.IsSolve = false;
+
+> insert into seller_app(sellerId, categoryId, disputeDetails, disputeDate, solutionDate, IsSolve) values(
+1, 1, 'property not able to listing', CURDATE(), adddate(sysdate(), INTERVAL 10 DAY), false
+);
+
+> insert into category(categoryName) values('property');
+> insert into category(categoryName) values('login or registration');
+> insert into category(categoryName) values('photo upload');
+> insert into category(categoryName) values('refund');
+> insert into category(categoryName) values('payment');
+> insert into category(categoryName) values('sell');
+> insert into category(categoryName) values('app improvement');
+> insert into category(categoryName) values('item listing');
+> insert into category(categoryName) values('Electronic');
+> insert into category(categoryName) values('Automobile');
+> insert into category(categoryName) values('Miscellaneous');
+
+
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Harish', 1);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Amit', 2);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('suresh', 3);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Rone', 4);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Pippo', 5);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Nobita', 6);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Riruru', 7);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Suzuka', 8);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Mahesh', 9);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Naresh', 10);
+> insert into disputeHandleTeam(disputeTeamName, categoryId) values('Doreamon', 11);
+
+> select s.did, s.bid, s.sid, c.cname, s.disputeDetail, s.dDate, s.solutionDate, s.IsSolve, t.DTname from buyer_to_seller s INNER JOIN disputTeam t INNER JOIN category c ON s.cid = t.cid AND s.cid = c.cid AND s.IsSolve = false
+
+> insert into buyer_to_seller (bid, cid, disputeDetail, dDate, sid, solutionDate, IsSolve) values( 1, 2, 'can not login', now(), null, addDate(curDate(), INTERVAL 15 DAY), false );
+
+> insert into products_sold values( 0, 1, 1, 1, 'house', 1, curdate(), 2500000, 2000000, 'Jaipur', curdate() );
+
+> insert into products_sold values( -1, 1, 1, 1, 'house', 1, 19900101, 2500000, 2000000, 'Jaipur', curdate() );
+
+> insert into products_sold values( -2, 1, 1, 1, 'house', 1, 19900101, 2500000, 2000000, 'Jaipur', 19960505 );
+
+> select * from products_sold order by auctionDate desc;
+
+> insert into seller (sellerFirstName, sellerLastName, sellerEmail, sellerPassword, sellerMobile, sellerDod) values('kanishk', 'rai', 'kanishk@gmail.com', '12345', '9890987656', '1999-02-02');
+
+> select * from seller where sellerEmail = 'kanishk@gmail.com' AND sellerPassword = '12345';
+
+> update seller set sellerPassword = '12345678' where sellerEmail = 'kanishk@gmail.com';
+
+> update seller set sellerEmail= 'kanishk@gmail.com' where sellerFirstName='kanishk' AND sellerDod= '1998-09-04' AND sellerMobile = '9890987656';
+
+> insert into products (sellerId, categoryId, productAddedName, sellingPrice, productName, productQuantity, auctionAddress, auctionDate, noOfBuyerAuction) values(1, 1, sysdate(), 15000000, 'shop', 1, 'Delhi', adddate(sysdate(), INTERVAL 10 DAY), 0);
+
+> update products set prodctQuantity = 5 where sellerId  = 1 and productName= 'shop';
+
+> update products set sellingPrice = 156825 where sellerId  = 1 and productName= 'shop';
+
+> update products set productQuantity = 1, sellingPrice = 10 where sellerId  = 1 and productName= 'shop';
+
+> delete from products where sellerId=1 AND productName = 'shop';
+
+> select * from products where sellerId = 1 order by productAddedDate desc;
+
